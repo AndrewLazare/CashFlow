@@ -1,0 +1,74 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+
+
+
+</body>
+
+</html>
+
+<script>
+    const numScenarios = 10;
+    const maxCashFlow = 10000;
+    const maxInitialInvestment = 50000;
+    const periodRangeMin = 1;
+    const periodRangeMax = 20;
+    const rateMax = 0.15;
+    
+    
+    //Main
+    // var cashFlows = [-50, 20, 30, 10];
+    // var rates = [0.06, 0.09, 0.034];
+    // var npvResult = netPresentValue(cashFlows, rates);
+    var generatedDataSet = createDataSet(numScenarios);
+    console.log(generatedDataSet);
+    
+
+    //Function Definitions
+    function createDataSet(dataCount) {
+        var dataSet = [];
+        for (i = 0; i < dataCount; i++) {
+            var scenario = createScenario();
+            dataSet.push(scenario);
+        }
+        return dataSet;
+    }
+
+    function createScenario(){
+        var scenario = {
+            cashFlows: [],
+            rates: []       
+        };
+        var initialInvestment = Math.random() * maxInitialInvestment; 
+        console.log(initialInvestment);
+
+        scenario.cashFlows.push(initialInvestment);
+        for(var i = 0; i < Math.floor(Math.random() * periodRangeMax) + periodRangeMin; i++){
+            scenario.cashFlows.push(Math.random() * maxCashFlow)
+            var rate = Math.random() * rateMax;
+            console.log(rate);
+            scenario.rates.push(rate);
+        }
+        return scenario;
+    }
+
+
+
+    function netPresentValue(cashFlows, rates) {
+        var presentValues = [];
+        for (var i = 1; i < cashFlows.length; i++) {
+            var j = i - 1;
+            presentValue = cashFlows[i] / Math.pow((1 + rates[j]), i);
+            presentValues.push(presentValue);
+        }
+        const reducer = (accumulator, currentValue) => accumulator + currentValue;
+        var sumPresentValues = presentValues.reduce(reducer);
+        var npv = cashFlows[0] + sumPresentValues;
+        return npv;
+    }
+</script>
